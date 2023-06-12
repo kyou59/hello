@@ -19,6 +19,11 @@ public class NumberGuessingGame {
             } else {
                 if (Math.abs(guess - targetNumber) >= 20) {
                     System.out.println("20以上差があります。");
+                    if (guess > targetNumber) {
+                        System.out.println("設定された数より大きいです。");
+                    } else {
+                        System.out.println("設定された数より小さいです。");
+                    }
                 } else {
                     if (guess > targetNumber) {
                         System.out.println("設定された数より大きいです。");

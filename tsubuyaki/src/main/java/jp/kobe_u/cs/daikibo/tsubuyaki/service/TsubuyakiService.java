@@ -12,6 +12,7 @@ import jp.kobe_u.cs.daikibo.tsubuyaki.repository.TsubuyakiRepository;
 
 @Service  
 public class TsubuyakiService {
+    public static final String search = null;
     @Autowired
     TsubuyakiRepository repo; // レポジトリ
     // つぶやきを投稿
@@ -37,5 +38,8 @@ public class TsubuyakiService {
         ArrayList<Tsubuyaki> list = new ArrayList<>();
         found.forEach(list::add);
         return list;
+    }
+    public List<Tsubuyaki> searchTsubuyaki(String keyword) {
+        return null;
     }
  }

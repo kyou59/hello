@@ -1,23 +1,55 @@
 <!DOCTYPE html>
+  
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
-
+  
 <head>
     <meta charset="UTF-8">
     <title>検索結果</title>
 </head>
 
 <body>
-    <h1>検索結果</h1>
-    <ul>
-        <li th:each="t: ${tsubuyakiList}">
+    <h1 id="lineCount"></h1>
+    <p id="message">検索結果はありませんでした。</p>
 
+    <script>
+        // 行数を数えて表示する関数
+        function updateLineCount() {
+            // <ul>要素を取得する
+            var list = document.getElementById("linesList");
+
+            // <li>タグの数を取得して行数を更新する
+            var lineCount = list.getElementsByTagName("li").length;
+            document.getElementById("lineCount").innerText = lineCount + "件の検索結果が見つかりました！";
+
+            // 検索結果が0件であれば検索結果がありませんでしたと表示する
+            var message = document.getElementById("message");
+            if (lineCount === 0) {
+                message.style.display = "block";
+            } else {
+                message.style.display = "none";
+            }
+        }
+
+        // ページが読み込まれた時にupdateLineCount関数を呼び出す
+        window.onload = updateLineCount;
+
+        // MutationObserverを使って<ul>要素が変更されたらupdateLineCount関数を呼び出す
+        var observer = new MutationObserver(updateLineCount);
+        observer.observe(document.getElementById("linesList"), { childList: true });
+    </script>
+
+    <ul id="linesList">
+  
+        <li th:each="t: ${searchList}">
   
             [[${t.comment}]] -- [[${t.name}]] on [[${t.createdAt}]]
-
   
         </li>
+  
     </ul>
-    <a href=/tsubuyaki/read>戻る</a>
-</body>
 
+    <a th:href="@{/read}">戻る</a>
+
+</body>
+  
 </html>

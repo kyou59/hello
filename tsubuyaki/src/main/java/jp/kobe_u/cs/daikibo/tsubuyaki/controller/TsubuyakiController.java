@@ -8,10 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.kobe_u.cs.daikibo.tsubuyaki.entity.Tsubuyaki;
 import jp.kobe_u.cs.daikibo.tsubuyaki.service.TsubuyakiService;
 
+@RequestMapping("")
 @Controller  
 public class TsubuyakiController {  
     @Autowired
@@ -27,6 +29,8 @@ public class TsubuyakiController {
         List<Tsubuyaki> list = ts.getAllTsubuyaki(); //全つぶやきを取得
         model.addAttribute("tsubuyakiList", list);   //モデル属性にリストをセット
         model.addAttribute("tsubuyakiForm", new TsubuyakiForm());  //空フォームをセット
+        model.addAttribute("searchList", list);   //モデル属性にリストをセット
+        model.addAttribute("searchForm", new SearchForm());  //空フォームをセット 
         return "tsubuyaki_list"; //リスト画面を返す
     }
     //つぶやきを投稿
@@ -41,11 +45,11 @@ public class TsubuyakiController {
         return "redirect:/read"; //メイン画面に転送
     }
     //つぶやきを検索
-    @GetMapping("/read")
-    String searchTsubuyakiList(@ModelAttribute("tsubuyakiSearch") TsubuyakiSearch search, Model model) {
-        List<Tsubuyaki> list = ts.getSomeTsubuyaki(search.getKeyword()); // 必要なつぶやきを取得
-        model.addAttribute("tsubuyakiList", list); // モデル属性にリストをセット
-        model.addAttribute("tsubuyakiForm", new TsubuyakiForm()); // 空フォームをセット
+    @GetMapping("/search")
+    String searchTsubuyaki(@ModelAttribute("searchForm") Tsubuyaki s, Model model) {
+        List<Tsubuyaki> list = ts.searchTsubuyaki(s.getKeyword()); // 必要なつぶやきを取得
+        model.addAttribute("searchList", list); // モデル属性にリストをセット
+        ts.searchTsubuyaki(s.getKeyword());
         return "tsubuyaki_search"; //検索結果画面を返す
     }
 }
